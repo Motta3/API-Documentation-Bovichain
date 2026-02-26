@@ -2,23 +2,16 @@ openapi: 3.0.3
 info:
   title: Bovichain API
   version: 1.0.0
-  description: '## Importante (arquivos e imagens)
-
+  description: |-
+    ## Importante (arquivos e imagens)
 
     Campos do tipo **file/image/anexo** devem receber uma **URL pública**.
 
-
     **Fluxo recomendado:**
-
     1) Faça upload do arquivo no endpoint **`/fileupload`** (multipart/form-data)
-
-    2) Use a **URL retornada** nos campos de foto/assinatura/receita/etc nos demais
-    endpoints.
-
+    2) Use a **URL retornada** nos campos de foto/assinatura/receita/etc nos demais endpoints.
 
     Alternativamente, você pode hospedar externamente e enviar a URL pública.
-
-    '
 servers:
   - url: https://app.bovichain.com/{version}/api/1.1/wf
     description: Bubble WF endpoints
