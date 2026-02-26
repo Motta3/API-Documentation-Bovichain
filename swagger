@@ -5,18 +5,18 @@ info:
   description: '## Importante (arquivos e imagens)
 
 
-    Campos do tipo **file/image/anexo** devem receber uma **URL pÃºblica**.
+    Campos do tipo **file/image/anexo** devem receber uma **URL pública**.
 
 
     **Fluxo recomendado:**
 
-    1) FaÃ§a upload do arquivo no endpoint **`/fileupload`** (multipart/form-data)
+    1) Faça upload do arquivo no endpoint **`/fileupload`** (multipart/form-data)
 
     2) Use a **URL retornada** nos campos de foto/assinatura/receita/etc nos demais
     endpoints.
 
 
-    Alternativamente, vocÃª pode hospedar externamente e enviar a URL pÃºblica.
+    Alternativamente, você pode hospedar externamente e enviar a URL pública.
 
     '
 servers:
@@ -38,7 +38,7 @@ paths:
       tags:
       - Auth
       summary: Login
-      description: Realiza login e retorna token, user_id e tempo de expiraÃ§Ã£o.
+      description: Realiza login e retorna token, user_id e tempo de expiração.
       security: []
       requestBody:
         required: true
@@ -48,7 +48,7 @@ paths:
               $ref: '#/components/schemas/LoginRequest'
             examples:
               default:
-                summary: Credenciais do usuÃ¡rio
+                summary: Credenciais do usuário
                 value:
                   email: user@example.com
                   senha: sua_senha_aqui
@@ -64,7 +64,7 @@ paths:
       tags:
       - Animais
       summary: Deletar animal
-      description: Remove um animal. Requer autenticaÃ§Ã£o Bearer.
+      description: Remove um animal. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -83,7 +83,7 @@ paths:
       tags:
       - Animais
       summary: Editar animal
-      description: Edita campos do animal (a maioria opcional). Requer autenticaÃ§Ã£o
+      description: Edita campos do animal (a maioria opcional). Requer autenticação
         Bearer.
       requestBody:
         required: true
@@ -103,7 +103,7 @@ paths:
       tags:
       - Animais
       summary: Adicionar BioID ao animal
-      description: Associa um BioID a um animal. Requer autenticaÃ§Ã£o Bearer.
+      description: Associa um BioID a um animal. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -129,7 +129,7 @@ paths:
       tags:
       - Animais
       summary: Cadastrar animal
-      description: Cadastra um animal na fazenda informada. Campos base sÃ£o obrigatÃ³rios;
+      description: Cadastra um animal na fazenda informada. Campos base são obrigatórios;
         campos extras podem ser opcionais conforme workflow.
       requestBody:
         required: true
@@ -152,8 +152,8 @@ paths:
       tags:
       - Animais
       summary: Buscar animais
-      description: Retorna os animais. Os parÃ¢metros `fazenda`, `animal` e `brinco_padrao`
-        sÃ£o opcionais e podem ser usados como filtros.
+      description: Retorna os animais. Os parâmetros `fazenda`, `animal` e `brinco_padrao`
+        são opcionais e podem ser usados como filtros.
       parameters:
       - in: query
         name: fazenda
@@ -211,7 +211,7 @@ paths:
       tags:
       - Colaboradores
       summary: Buscar colaboradores
-      description: Retorna colaboradores de uma fazenda. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna colaboradores de uma fazenda. Requer autenticação Bearer.
       parameters:
       - in: query
         name: fazenda
@@ -237,7 +237,7 @@ paths:
       tags:
       - Fazendas
       summary: Buscar fazendas
-      description: Retorna as fazendas vinculadas ao usuÃ¡rio/autorizaÃ§Ã£o.
+      description: Retorna as fazendas vinculadas ao usuário/autorização.
       responses:
         '200':
           description: OK
@@ -250,7 +250,7 @@ paths:
       tags:
       - Medicamentos
       summary: Aplicar medicamento
-      description: Registra a aplicaÃ§Ã£o de um medicamento. Requer autenticaÃ§Ã£o Bearer.
+      description: Registra a aplicacao de um medicamento. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -269,7 +269,7 @@ paths:
       tags:
       - Medicamentos
       summary: Atualizar medicamento
-      description: Atualiza um registro de medicamento. Requer autenticaÃ§Ã£o Bearer.
+      description: Atualiza um registro de medicamento. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -288,7 +288,7 @@ paths:
       tags:
       - Medicamentos
       summary: Buscar medicamentos
-      description: Retorna os medicamentos cadastrados. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna os medicamentos cadastrados. Requer autenticação Bearer.
       parameters:
       - in: query
         name: fazenda
@@ -320,7 +320,7 @@ paths:
       tags:
       - Medicamentos
       summary: Cancelar medicamento
-      description: Cancela um medicamento. Requer autenticaÃ§Ã£o Bearer.
+      description: Cancela um medicamento. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -339,7 +339,7 @@ paths:
       tags:
       - Medicamentos
       summary: Criar medicamento
-      description: Cria um registro de medicamento. Requer autenticaÃ§Ã£o Bearer.
+      description: Cria um registro de medicamento. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -396,7 +396,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - finalidade
-      description: Retorna o Option Set 'finalidade'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'finalidade'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -409,7 +409,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - origem
-      description: Retorna o Option Set 'origem'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'origem'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -422,7 +422,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - pureza
-      description: Retorna o Option Set 'pureza'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'pureza'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -435,7 +435,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - raca
-      description: Retorna o Option Set 'raca'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'raca'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -448,7 +448,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - sexo
-      description: Retorna o Option Set 'sexo'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'sexo'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -461,7 +461,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - status vacina
-      description: Retorna o Option Set 'status vacina'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'status vacina'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -474,7 +474,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - tipo equipamento
-      description: Retorna o Option Set 'tipo equipamento'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'tipo equipamento'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -487,7 +487,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - tipo pesagem
-      description: Retorna o Option Set 'tipo pesagem'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'tipo pesagem'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -500,7 +500,7 @@ paths:
       tags:
       - Option Sets
       summary: Option Set - tipo vacina
-      description: Retorna o Option Set 'tipo vacina'. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna o Option Set 'tipo vacina'. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -514,7 +514,7 @@ paths:
       - Pesagem
       summary: Buscar pesagens
       description: Retorna as pesagens cadastradas. O parÃ¢metro `animal` Ã© opcional;
-        quando informado, filtra pelo animal. Requer autenticaÃ§Ã£o Bearer.
+        quando informado, filtra pelo animal. Requer autenticação Bearer.
       parameters:
       - in: query
         name: animal
@@ -546,7 +546,7 @@ paths:
       tags:
       - Pesagem
       summary: Deletar pesagem
-      description: Remove uma pesagem (animal_peso). Requer autenticaÃ§Ã£o Bearer.
+      description: Remove uma pesagem (animal_peso). Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -565,7 +565,7 @@ paths:
       tags:
       - Pesagem
       summary: Editar peso do animal
-      description: Edita uma pesagem existente. Requer autenticaÃ§Ã£o Bearer.
+      description: Edita uma pesagem existente. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -584,7 +584,7 @@ paths:
       tags:
       - Pesagem
       summary: Novo peso do animal
-      description: Registra uma pesagem para um animal. Requer autenticaÃ§Ã£o Bearer.
+      description: Registra uma pesagem para um animal. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -603,7 +603,7 @@ paths:
       tags:
       - Vacina
       summary: Aplicar vacina
-      description: Registra a aplicaÃ§Ã£o de uma vacina em um animal.
+      description: Registra a aplicacao de uma vacina em um animal.
       requestBody:
         required: true
         content:
@@ -622,7 +622,7 @@ paths:
       tags:
       - Vacina
       summary: Buscar vacinaÃ§Ãµes
-      description: Retorna as vacinaÃ§Ãµes cadastradas. Requer autenticaÃ§Ã£o Bearer.
+      description: Retorna as vacinaÃ§Ãµes cadastradas. Requer autenticação Bearer.
       responses:
         '200':
           description: OK
@@ -654,7 +654,7 @@ paths:
       tags:
       - Vacina
       summary: Deletar vacinaÃ§Ã£o
-      description: Deleta uma vacinaÃ§Ã£o. Requer autenticaÃ§Ã£o Bearer.
+      description: Deleta uma vacinaÃ§Ã£o. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -673,7 +673,7 @@ paths:
       tags:
       - Vacina
       summary: Desaplicar vacinaÃ§Ã£o
-      description: Desaplica uma vacinaÃ§Ã£o. Requer autenticaÃ§Ã£o Bearer.
+      description: Desaplica uma vacinaÃ§Ã£o. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -692,7 +692,7 @@ paths:
       tags:
       - Vacina
       summary: Editar vacinaÃ§Ã£o
-      description: Edita uma vacinaÃ§Ã£o existente. Requer autenticaÃ§Ã£o Bearer.
+      description: Edita uma vacinaÃ§Ã£o existente. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
@@ -1322,7 +1322,7 @@ components:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica da foto da aplicaÃ§Ã£o (upload em /fileupload).
+          description: URL pÃºblica da foto da aplicacao (upload em /fileupload).
         foto_nota_fiscal:
           type: string
           format: uri
@@ -1448,7 +1448,7 @@ components:
       type: object
       required:
       - animal
-      - data_aplicaÃ§Ã£o
+      - data_aplicacao
       - status
       - remedio
       - metodo
@@ -1458,7 +1458,7 @@ components:
       properties:
         animal:
           type: string
-        data_aplicaÃ§Ã£o:
+        data_aplicacao:
           type: string
           format: date
         status:
@@ -1505,7 +1505,7 @@ components:
         animal:
           type: string
           nullable: true
-        data_aplicaÃ§Ã£o:
+        data_aplicacao:
           type: string
           format: date
           nullable: true
@@ -1550,14 +1550,14 @@ components:
       type: object
       required:
       - medicamento
-      - data_aplicaÃ§Ã£o
+      - data_aplicacao
       - obs
       - tipo_resp
       - usuario
       properties:
         medicamento:
           type: string
-        data_aplicaÃ§Ã£o:
+        data_aplicacao:
           type: string
           format: date
         responsavel_use:
