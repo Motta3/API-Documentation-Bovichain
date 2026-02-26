@@ -20,23 +20,23 @@ info:
 
     '
 servers:
-- url: https://app.bovichain.com/{version}/api/1.1/wf
-  description: Bubble WF endpoints
-  variables:
-    version:
-      default: version-test
-- url: https://app.bovichain.com/{version}
-  description: 'Root endpoints (ex: fileupload)'
-  variables:
-    version:
-      default: version-test
+  - url: https://app.bovichain.com/{version}/api/1.1/wf
+    description: Bubble WF endpoints
+    variables:
+      version:
+        default: version-test
+  - url: https://app.bovichain.com/{version}
+    description: Root endpoints (ex: fileupload)
+    variables:
+      version:
+        default: version-test
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   /login:
     post:
       tags:
-      - Auth
+        - Auth
       summary: Login
       description: Realiza login e retorna token, user_id e tempo de expiração.
       security: []
@@ -45,7 +45,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
             examples:
               default:
                 summary: Credenciais do usuário
@@ -53,16 +53,17 @@ paths:
                   email: user@example.com
                   senha: sua_senha_aqui
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginResponse'
+                $ref: "#/components/schemas/LoginResponse"
+
   /delete_animal:
     post:
       tags:
-      - Animais
+        - Animais
       summary: Deletar animal
       description: Remove um animal. Requer autenticação Bearer.
       requestBody:
@@ -70,38 +71,39 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeleteAnimalRequest'
+              $ref: "#/components/schemas/DeleteAnimalRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteAnimalResponse'
+                $ref: "#/components/schemas/DeleteAnimalResponse"
+
   /editar_animal:
     post:
       tags:
-      - Animais
+        - Animais
       summary: Editar animal
-      description: Edita campos do animal (a maioria opcional). Requer autenticação
-        Bearer.
+      description: Edita campos do animal (a maioria opcional). Requer autenticação Bearer.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditarAnimalRequest'
+              $ref: "#/components/schemas/EditarAnimalRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EditarAnimalResponse'
+                $ref: "#/components/schemas/EditarAnimalResponse"
+
   /adicionar-bioid:
     post:
       tags:
-      - Animais
+        - Animais
       summary: Adicionar BioID ao animal
       description: Associa um BioID a um animal. Requer autenticação Bearer.
       requestBody:
@@ -109,9 +111,9 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/AdicionarBioidRequest'
+              $ref: "#/components/schemas/AdicionarBioidRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             text/plain:
@@ -122,23 +124,23 @@ paths:
                   summary: Quando adiciona com sucesso
                   value: BioID adicionado no animal
                 jaPossuiBioid:
-                  summary: Quando o animal jÃ¡ possui BioID
-                  value: Animal jÃ¡ possui bioid
+                  summary: Quando o animal já possui BioID
+                  value: Animal já possui bioid
+
   /cadastrar-animal-qr:
     post:
       tags:
-      - Animais
+        - Animais
       summary: Cadastrar animal
-      description: Cadastra um animal na fazenda informada. Campos base são obrigatórios;
-        campos extras podem ser opcionais conforme workflow.
+      description: Cadastra um animal na fazenda informada. Campos base são obrigatórios; campos extras podem ser opcionais conforme workflow.
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CadastrarAnimalRequest'
+              $ref: "#/components/schemas/CadastrarAnimalRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             text/plain:
@@ -147,127 +149,131 @@ paths:
               examples:
                 success:
                   value: Animal cadastrado
+
   /get-animais:
     get:
       tags:
-      - Animais
+        - Animais
       summary: Buscar animais
-      description: Retorna os animais. Os parâmetros `fazenda`, `animal` e `brinco_padrao`
-        são opcionais e podem ser usados como filtros.
+      description: Retorna os animais. Os parâmetros `fazenda`, `animal` e `brinco_padrao` são opcionais e podem ser usados como filtros.
       parameters:
-      - in: query
-        name: fazenda
-        required: false
-        schema:
-          type: string
-        description: ID da fazenda para filtrar (opcional)
-      - in: query
-        name: animal
-        required: false
-        schema:
-          type: string
-        description: 'Animal (Bubble type: animal) - ID (opcional)'
-      - in: query
-        name: brinco_padrao
-        required: false
-        schema:
-          type: string
-        description: Brinco padrÃ£o (texto) para filtrar (opcional)
+        - in: query
+          name: fazenda
+          required: false
+          schema:
+            type: string
+          description: ID da fazenda para filtrar (opcional)
+        - in: query
+          name: animal
+          required: false
+          schema:
+            type: string
+          description: "Animal (Bubble type: animal) - ID (opcional)"
+        - in: query
+          name: brinco_padrao
+          required: false
+          schema:
+            type: string
+          description: Brinco padrão (texto) para filtrar (opcional)
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BuscarAnimaisResponse'
+                $ref: "#/components/schemas/BuscarAnimaisResponse"
+
   /fileupload:
     post:
       tags:
-      - Arquivos
+        - Arquivos
       summary: Upload de arquivo
-      description: Faz upload de um arquivo (multipart/form-data) e retorna a URL
-        do arquivo enviado.
+      description: Faz upload de um arquivo (multipart/form-data) e retorna a URL do arquivo enviado.
       servers:
-      - url: https://app.bovichain.com/{version}
-        description: Root endpoint for fileupload
-        variables:
-          version:
-            default: version-test
+        - url: https://app.bovichain.com/{version}
+          description: Root endpoint for fileupload
+          variables:
+            version:
+              default: version-test
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/FileUploadRequest'
+              $ref: "#/components/schemas/FileUploadRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FileUploadResponse'
+                $ref: "#/components/schemas/FileUploadResponse"
+
   /buscar_colaboradores:
     get:
       tags:
-      - Colaboradores
+        - Colaboradores
       summary: Buscar colaboradores
       description: Retorna colaboradores de uma fazenda. Requer autenticação Bearer.
       parameters:
-      - in: query
-        name: fazenda
-        required: false
-        schema:
-          type: string
-        description: 'Fazenda (Bubble type: fazenda) - ID'
-      - in: query
-        name: colaborador
-        required: false
-        schema:
-          type: string
-        description: 'Colaborador (Bubble type: colaboradores) - ID (opcional)'
+        - in: query
+          name: fazenda
+          required: false
+          schema:
+            type: string
+          description: "Fazenda (Bubble type: fazenda) - ID"
+        - in: query
+          name: colaborador
+          required: false
+          schema:
+            type: string
+          description: "Colaborador (Bubble type: colaboradores) - ID (opcional)"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BuscarColaboradoresResponse'
+                $ref: "#/components/schemas/BuscarColaboradoresResponse"
+
   /get-fazendas:
     get:
       tags:
-      - Fazendas
+        - Fazendas
       summary: Buscar fazendas
       description: Retorna as fazendas vinculadas ao usuário/autorização.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetFazendasResponse'
+                $ref: "#/components/schemas/GetFazendasResponse"
+
   /aplicar_medicamento:
     post:
       tags:
-      - Medicamentos
+        - Medicamentos
       summary: Aplicar medicamento
-      description: Registra a aplicacao de um medicamento. Requer autenticação Bearer.
+      description: Registra a aplicação de um medicamento. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AplicarMedicamentoRequest'
+              $ref: "#/components/schemas/AplicarMedicamentoRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AplicarMedicamentoResponse'
+                $ref: "#/components/schemas/AplicarMedicamentoResponse"
+
   /atualizar_medicamento:
     post:
       tags:
-      - Medicamentos
+        - Medicamentos
       summary: Atualizar medicamento
       description: Atualiza um registro de medicamento. Requer autenticação Bearer.
       requestBody:
@@ -275,50 +281,52 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AtualizarMedicamentoRequest'
+              $ref: "#/components/schemas/AtualizarMedicamentoRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AtualizarMedicamentoResponse'
+                $ref: "#/components/schemas/AtualizarMedicamentoResponse"
+
   /buscar_medicamentos:
     get:
       tags:
-      - Medicamentos
+        - Medicamentos
       summary: Buscar medicamentos
       description: Retorna os medicamentos cadastrados. Requer autenticação Bearer.
       parameters:
-      - in: query
-        name: fazenda
-        required: false
-        schema:
-          type: string
-        description: 'Fazenda (Bubble type: fazenda) - ID'
-      - in: query
-        name: animal
-        required: false
-        schema:
-          type: string
-        description: 'Animal (Bubble type: animal) - ID (opcional)'
-      - in: query
-        name: medicamento
-        required: false
-        schema:
-          type: string
-        description: 'Medicamento (Bubble type: medicamento) - ID (opcional)'
+        - in: query
+          name: fazenda
+          required: false
+          schema:
+            type: string
+          description: "Fazenda (Bubble type: fazenda) - ID"
+        - in: query
+          name: animal
+          required: false
+          schema:
+            type: string
+          description: "Animal (Bubble type: animal) - ID (opcional)"
+        - in: query
+          name: medicamento
+          required: false
+          schema:
+            type: string
+          description: "Medicamento (Bubble type: medicamento) - ID (opcional)"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BuscarMedicamentosResponse'
+                $ref: "#/components/schemas/BuscarMedicamentosResponse"
+
   /cancelar_medicamento:
     post:
       tags:
-      - Medicamentos
+        - Medicamentos
       summary: Cancelar medicamento
       description: Cancela um medicamento. Requer autenticação Bearer.
       requestBody:
@@ -326,18 +334,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CancelarMedicamentoRequest'
+              $ref: "#/components/schemas/CancelarMedicamentoRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CancelarMedicamentoResponse'
+                $ref: "#/components/schemas/CancelarMedicamentoResponse"
+
   /criar_medicamento:
     post:
       tags:
-      - Medicamentos
+        - Medicamentos
       summary: Criar medicamento
       description: Cria um registro de medicamento. Requer autenticação Bearer.
       requestBody:
@@ -345,18 +354,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CriarMedicamentoRequest'
+              $ref: "#/components/schemas/CriarMedicamentoRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CriarMedicamentoResponse'
+                $ref: "#/components/schemas/CriarMedicamentoResponse"
+
   /registrar_morte_animal:
     post:
       tags:
-      - Morte
+        - Morte
       summary: Registrar morte do animal
       description: Registra a morte de um animal.
       requestBody:
@@ -364,18 +374,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegistrarMorteRequest'
+              $ref: "#/components/schemas/RegistrarMorteRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegistrarMorteResponse'
+                $ref: "#/components/schemas/RegistrarMorteResponse"
+
   /reverter_morte_animal:
     post:
       tags:
-      - Morte
+        - Morte
       summary: Reverter registro de morte
       description: Reverte (desfaz) um registro de morte do animal.
       requestBody:
@@ -383,168 +394,178 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReverterMorteRequest'
+              $ref: "#/components/schemas/ReverterMorteRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReverterMorteResponse'
+                $ref: "#/components/schemas/ReverterMorteResponse"
+
   /get-finalidade:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - finalidade
-      description: Retorna o Option Set 'finalidade'. Requer autenticação Bearer.
+      description: Retorna o Option Set "finalidade". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-origem:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - origem
-      description: Retorna o Option Set 'origem'. Requer autenticação Bearer.
+      description: Retorna o Option Set "origem". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-pureza:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - pureza
-      description: Retorna o Option Set 'pureza'. Requer autenticação Bearer.
+      description: Retorna o Option Set "pureza". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-raca:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - raca
-      description: Retorna o Option Set 'raca'. Requer autenticação Bearer.
+      description: Retorna o Option Set "raca". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-sexo:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - sexo
-      description: Retorna o Option Set 'sexo'. Requer autenticação Bearer.
+      description: Retorna o Option Set "sexo". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-status-vacina:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - status vacina
-      description: Retorna o Option Set 'status vacina'. Requer autenticação Bearer.
+      description: Retorna o Option Set "status vacina". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-tipo-equipamento:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - tipo equipamento
-      description: Retorna o Option Set 'tipo equipamento'. Requer autenticação Bearer.
+      description: Retorna o Option Set "tipo equipamento". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-tipo-pesagem:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - tipo pesagem
-      description: Retorna o Option Set 'tipo pesagem'. Requer autenticação Bearer.
+      description: Retorna o Option Set "tipo pesagem". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /get-tipo-vacina:
     get:
       tags:
-      - Option Sets
+        - Option Sets
       summary: Option Set - tipo vacina
-      description: Retorna o Option Set 'tipo vacina'. Requer autenticação Bearer.
+      description: Retorna o Option Set "tipo vacina". Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptionSetResponse'
+                $ref: "#/components/schemas/OptionSetResponse"
+
   /buscar_pesagens:
     get:
       tags:
-      - Pesagem
+        - Pesagem
       summary: Buscar pesagens
-      description: Retorna as pesagens cadastradas. O parÃ¢metro `animal` Ã© opcional;
-        quando informado, filtra pelo animal. Requer autenticação Bearer.
+      description: Retorna as pesagens cadastradas. O parâmetro `animal` é opcional; quando informado, filtra pelo animal. Requer autenticação Bearer.
       parameters:
-      - in: query
-        name: animal
-        required: false
-        schema:
-          type: string
-        description: 'Animal (Bubble type: animal) - ID do animal para filtrar (opcional)'
-      - in: query
-        name: fazenda
-        required: false
-        schema:
-          type: string
-        description: 'Fazenda (Bubble type: fazenda) - ID (opcional)'
-      - in: query
-        name: pesagem
-        required: false
-        schema:
-          type: string
-        description: 'Pesagem (Bubble type: animal_peso) - ID (opcional)'
+        - in: query
+          name: animal
+          required: false
+          schema:
+            type: string
+          description: "Animal (Bubble type: animal) - ID do animal para filtrar (opcional)"
+        - in: query
+          name: fazenda
+          required: false
+          schema:
+            type: string
+          description: "Fazenda (Bubble type: fazenda) - ID (opcional)"
+        - in: query
+          name: pesagem
+          required: false
+          schema:
+            type: string
+          description: "Pesagem (Bubble type: animal_peso) - ID (opcional)"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BuscarPesagensResponse'
+                $ref: "#/components/schemas/BuscarPesagensResponse"
+
   /delete_pesagem:
     post:
       tags:
-      - Pesagem
+        - Pesagem
       summary: Deletar pesagem
       description: Remove uma pesagem (animal_peso). Requer autenticação Bearer.
       requestBody:
@@ -552,18 +573,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeletePesagemRequest'
+              $ref: "#/components/schemas/DeletePesagemRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeletePesagemResponse'
+                $ref: "#/components/schemas/DeletePesagemResponse"
+
   /editar_animal_peso:
     post:
       tags:
-      - Pesagem
+        - Pesagem
       summary: Editar peso do animal
       description: Edita uma pesagem existente. Requer autenticação Bearer.
       requestBody:
@@ -571,18 +593,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditarAnimalPesoRequest'
+              $ref: "#/components/schemas/EditarAnimalPesoRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EditarAnimalPesoResponse'
+                $ref: "#/components/schemas/EditarAnimalPesoResponse"
+
   /novo_animal_peso:
     post:
       tags:
-      - Pesagem
+        - Pesagem
       summary: Novo peso do animal
       description: Registra uma pesagem para um animal. Requer autenticação Bearer.
       requestBody:
@@ -590,134 +613,141 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NovoAnimalPesoRequest'
+              $ref: "#/components/schemas/NovoAnimalPesoRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NovoAnimalPesoResponse'
+                $ref: "#/components/schemas/NovoAnimalPesoResponse"
+
   /aplicar_vacina:
     post:
       tags:
-      - Vacina
+        - Vacina
       summary: Aplicar vacina
-      description: Registra a aplicacao de uma vacina em um animal.
+      description: Registra a aplicação de uma vacina em um animal.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AplicarVacinaRequest'
+              $ref: "#/components/schemas/AplicarVacinaRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AplicarVacinaResponse'
+                $ref: "#/components/schemas/AplicarVacinaResponse"
+
   /buscar_vacinas:
     get:
       tags:
-      - Vacina
-      summary: Buscar vacinaÃ§Ãµes
-      description: Retorna as vacinaÃ§Ãµes cadastradas. Requer autenticação Bearer.
+        - Vacina
+      summary: Buscar vacinações
+      description: Retorna as vacinações cadastradas. Requer autenticação Bearer.
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BuscarVacinasResponse'
+                $ref: "#/components/schemas/BuscarVacinasResponse"
       parameters:
-      - in: query
-        name: fazenda
-        required: false
-        schema:
-          type: string
-        description: 'Fazenda (Bubble type: fazenda) - ID (opcional)'
-      - in: query
-        name: vacina
-        required: false
-        schema:
-          type: string
-        description: 'VacinaÃ§Ã£o (Bubble type: vacinacao) - ID (opcional)'
-      - in: query
-        name: animal
-        required: false
-        schema:
-          type: string
-        description: 'Animal (Bubble type: animal) - ID (opcional)'
+        - in: query
+          name: fazenda
+          required: false
+          schema:
+            type: string
+          description: "Fazenda (Bubble type: fazenda) - ID (opcional)"
+        - in: query
+          name: vacina
+          required: false
+          schema:
+            type: string
+          description: "vacinas (Bubble type: vacinacao) - ID (opcional)"
+        - in: query
+          name: animal
+          required: false
+          schema:
+            type: string
+          description: "Animal (Bubble type: animal) - ID (opcional)"
+
   /delete_vacina:
     post:
       tags:
-      - Vacina
-      summary: Deletar vacinaÃ§Ã£o
-      description: Deleta uma vacinaÃ§Ã£o. Requer autenticação Bearer.
+        - Vacina
+      summary: Deletar vacinas
+      description: Deleta uma vacinas. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeleteVacinaRequest'
+              $ref: "#/components/schemas/DeleteVacinaRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteVacinaResponse'
+                $ref: "#/components/schemas/DeleteVacinaResponse"
+
   /desaplicar_vacina:
     post:
       tags:
-      - Vacina
-      summary: Desaplicar vacinaÃ§Ã£o
-      description: Desaplica uma vacinaÃ§Ã£o. Requer autenticação Bearer.
+        - Vacina
+      summary: Desaplicar vacinas
+      description: Desaplica uma vacinas. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DesaplicarVacinacaoRequest'
+              $ref: "#/components/schemas/DesaplicarVacinacaoRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DesaplicarVacinacaoResponse'
+                $ref: "#/components/schemas/DesaplicarVacinacaoResponse"
+
   /editar_vacina:
     post:
       tags:
-      - Vacina
-      summary: Editar vacinaÃ§Ã£o
-      description: Edita uma vacinaÃ§Ã£o existente. Requer autenticação Bearer.
+        - Vacina
+      summary: Editar vacinas
+      description: Edita uma vacinas existente. Requer autenticação Bearer.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditarVacinaRequest'
+              $ref: "#/components/schemas/EditarVacinaRequest"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EditarVacinaResponse'
+                $ref: "#/components/schemas/EditarVacinaResponse"
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
   schemas:
     LoginRequest:
       type: object
       required:
-      - email
-      - senha
+        - email
+        - senha
       properties:
         email:
           type: string
@@ -725,20 +755,21 @@ components:
         senha:
           type: string
           format: password
+
     LoginResponse:
       type: object
       required:
-      - status
-      - response
+        - status
+        - response
       properties:
         status:
           type: string
         response:
           type: object
           required:
-          - token
-          - user_id
-          - expires
+            - token
+            - user_id
+            - expires
           properties:
             token:
               type: string
@@ -746,37 +777,53 @@ components:
               type: string
             expires:
               type: integer
+
     GetFazendasResponse:
       type: object
       additionalProperties: true
+
     BuscarColaboradoresResponse:
       type: object
       additionalProperties: true
+
     OptionSetResponse:
       type: object
       description: Resposta do Option Set (estrutura fixa do sistema).
       additionalProperties: true
+
     FileUploadRequest:
       type: object
       required:
-      - file
+        - file
       properties:
         file:
           type: string
           format: binary
           description: Arquivo a ser enviado
       additionalProperties: false
+
     FileUploadResponse:
-      type: string
-      description: URL do arquivo enviado
+      description: Resposta do upload. Pode ser string (URL) ou objeto { url }.
+      oneOf:
+        - type: string
+          format: uri
+          description: URL pública do arquivo enviado
+        - type: object
+          required: [url]
+          properties:
+            url:
+              type: string
+              format: uri
+          additionalProperties: true
+
     CadastrarAnimalRequest:
       type: object
       required:
-      - fazenda
-      - bioid
-      - raca
-      - sexo
-      - tag-principal
+        - fazenda
+        - bioid
+        - raca
+        - sexo
+        - tag-principal
       properties:
         fazenda:
           type: string
@@ -786,7 +833,7 @@ components:
           type: string
         sexo:
           type: string
-          description: 'Sexo do animal (ex.: M/F)'
+          description: "Sexo do animal (ex.: M/F)"
         tag-principal:
           type: string
         latitude:
@@ -803,29 +850,31 @@ components:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica da imagem (opcional)
+          description: URL pública da imagem (opcional)
       additionalProperties: false
+
     BuscarAnimaisResponse:
       type: object
       required:
-      - quantidade encontrada
-      - animais
+        - quantidade encontrada
+        - animais
       properties:
         quantidade encontrada:
           type: integer
         animais:
           type: array
           items:
-            $ref: '#/components/schemas/AnimalResumo'
+            $ref: "#/components/schemas/AnimalResumo"
       additionalProperties: false
+
     AnimalResumo:
       type: object
       required:
-      - tag-principal
-      - bioid
-      - sexo
-      - raca
-      - id
+        - tag-principal
+        - bioid
+        - sexo
+        - raca
+        - id
       properties:
         tag-principal:
           type: string
@@ -838,11 +887,12 @@ components:
         id:
           type: string
       additionalProperties: false
+
     AdicionarBioidRequest:
       type: object
       required:
-      - animal
-      - bioid
+        - animal
+        - bioid
       properties:
         animal:
           type: string
@@ -851,26 +901,29 @@ components:
           type: string
           description: BioID a ser associado
       additionalProperties: false
+
     DeleteAnimalRequest:
       type: object
       required:
-      - animal
+        - animal
       properties:
         animal:
           type: string
-          description: 'Animal (Bubble type: animal) - ID'
+          description: "Animal (Bubble type: animal) - ID"
       additionalProperties: false
+
     DeleteAnimalResponse:
       type: object
       additionalProperties: true
+
     EditarAnimalRequest:
       type: object
       required:
-      - animal
+        - animal
       properties:
         animal:
           type: string
-          description: 'Animal (Bubble type: animal) - ID'
+          description: "Animal (Bubble type: animal) - ID"
         nome:
           type: string
           nullable: true
@@ -880,7 +933,7 @@ components:
         raca:
           type: string
           nullable: true
-          description: 'Option Set: raca_animal (valor do Option Set)'
+          description: "Option Set: raca_animal (valor do Option Set)"
         raca_hibrida:
           type: array
           nullable: true
@@ -889,7 +942,7 @@ components:
         sex:
           type: string
           nullable: true
-          description: (deprecated) use 'sexo'
+          description: "(deprecated) use 'sexo'"
         morto:
           type: boolean
           nullable: true
@@ -914,7 +967,7 @@ components:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica da foto principal (upload em /fileupload).
+          description: URL pública da foto principal (upload em /fileupload).
         data_nascimento:
           type: string
           format: date
@@ -927,7 +980,7 @@ components:
           nullable: true
           items:
             type: string
-          description: 'Lista de etiquetas (Bubble type: etiqueta) - IDs'
+          description: "Lista de etiquetas (Bubble type: etiqueta) - IDs"
         local_nascimento:
           type: string
           nullable: true
@@ -950,23 +1003,23 @@ components:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica da foto de morte (upload em /fileupload).
+          description: URL pública da foto de morte (upload em /fileupload).
         rfid:
           type: string
           nullable: true
         finalidade:
           type: string
           nullable: true
-          description: 'Option Set: finalidade_animal (valor do Option Set)'
+          description: "Option Set: finalidade_animal (valor do Option Set)"
         fazenda_local:
           type: string
           nullable: true
         lote:
-          type: string
+          type: array
           nullable: true
           items:
             type: string
-          description: 'Lotes (Bubble type: lote) - IDs'
+          description: "Lotes (Bubble type: lote) - IDs"
         peso_ideal:
           type: number
           nullable: true
@@ -999,11 +1052,11 @@ components:
         categoria:
           type: string
           nullable: true
-          description: 'Option Set: Categoria_animal (valor do Option Set)'
+          description: "Option Set: Categoria_animal (valor do Option Set)"
         proprietario:
           type: string
           nullable: true
-          description: 'ProprietÃ¡rio (Bubble type: colaboradores) - ID'
+          description: "Proprietário (Bubble type: colaboradores) - ID"
         latitude:
           type: string
           nullable: true
@@ -1017,21 +1070,21 @@ components:
         sexo:
           type: string
           nullable: true
-          description: 'Option Set: animal_sex (valor do Option Set)'
+          description: "Option Set: animal_sex (valor do Option Set)"
         brinco_padrao:
           type: string
           nullable: true
         fazenda_pasto:
           type: string
           nullable: true
-          description: 'Fazenda pasto (Bubble type: fazenda_pastos) - ID'
+          description: "Fazenda pasto (Bubble type: fazenda_pastos) - ID"
         observacao:
           type: string
           nullable: true
         tipo_animal:
           type: string
           nullable: true
-          description: 'Option Set: Tipo_animal (valor do Option Set)'
+          description: "Option Set: Tipo_animal (valor do Option Set)"
         identificacao_eletronica:
           type: string
           nullable: true
@@ -1050,29 +1103,31 @@ components:
         status_saida:
           type: string
           nullable: true
-          description: 'Option Set: Animal_status_saida (valor do Option Set)'
+          description: "Option Set: Animal_status_saida (valor do Option Set)"
       additionalProperties: false
+
     EditarAnimalResponse:
       type: object
       additionalProperties: true
+
     RegistrarMorteRequest:
       type: object
       required:
-      - data
-      - observacao
-      - organizacao
-      - causa_morte
-      - animal
-      - campo_alterado
-      - criado_por
-      - data_criacao
-      - descricao
-      - fazenda
-      - origem_alteracao
-      - unique_id_alteracao
-      - valor_antes
-      - valor_depois
-      - colaborador
+        - data
+        - observacao
+        - organizacao
+        - causa_morte
+        - animal
+        - campo_alterado
+        - criado_por
+        - data_criacao
+        - descricao
+        - fazenda
+        - origem_alteracao
+        - unique_id_alteracao
+        - valor_antes
+        - valor_depois
+        - colaborador
       properties:
         data:
           type: string
@@ -1089,7 +1144,7 @@ components:
           type: string
         criado_por:
           type: string
-          description: 'User (Bubble type: User) - ID'
+          description: "User (Bubble type: User) - ID"
         data_criacao:
           type: string
           format: date
@@ -1099,7 +1154,7 @@ components:
           type: string
         origem_alteracao:
           type: string
-          description: 'Option Set: Origem_alteracao (valor do Option Set)'
+          description: "Option Set: Origem_alteracao (valor do Option Set)"
         unique_id_alteracao:
           type: string
         valor_antes:
@@ -1108,34 +1163,36 @@ components:
           type: string
         colaborador:
           type: string
-          description: 'Colaboradores (Bubble type: colaboradores) - ID'
+          description: "Colaboradores (Bubble type: colaboradores) - ID"
         imagem:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica do arquivo/imagem (upload em /fileupload).
+          description: URL pública do arquivo/imagem (upload em /fileupload).
       additionalProperties: false
+
     RegistrarMorteResponse:
       type: object
       additionalProperties: true
+
     ReverterMorteRequest:
       type: object
       required:
-      - data
-      - observacao
-      - organizacao
-      - causa_morte
-      - animal
-      - campo_alterado
-      - criado_por
-      - data_criacao
-      - descricao
-      - fazenda
-      - origem_alteracao
-      - unique_id_alteracao
-      - valor_antes
-      - valor_depois
-      - colaborador
+        - data
+        - observacao
+        - organizacao
+        - causa_morte
+        - animal
+        - campo_alterado
+        - criado_por
+        - data_criacao
+        - descricao
+        - fazenda
+        - origem_alteracao
+        - unique_id_alteracao
+        - valor_antes
+        - valor_depois
+        - colaborador
       properties:
         data:
           type: string
@@ -1152,7 +1209,7 @@ components:
           type: string
         criado_por:
           type: string
-          description: 'User (Bubble type: User) - ID'
+          description: "User (Bubble type: User) - ID"
         data_criacao:
           type: string
           format: date
@@ -1162,7 +1219,7 @@ components:
           type: string
         origem_alteracao:
           type: string
-          description: 'Option Set: Origem_alteracao (valor do Option Set)'
+          description: "Option Set: Origem_alteracao (valor do Option Set)"
         unique_id_alteracao:
           type: string
         valor_antes:
@@ -1171,42 +1228,47 @@ components:
           type: string
         colaborador:
           type: string
-          description: 'Colaboradores (Bubble type: colaboradores) - ID'
+          description: "Colaboradores (Bubble type: colaboradores) - ID"
         imagem:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica do arquivo/imagem (upload em /fileupload).
+          description: URL pública do arquivo/imagem (upload em /fileupload).
       additionalProperties: false
+
     ReverterMorteResponse:
       type: object
       additionalProperties: true
+
     BuscarPesagensResponse:
       type: object
       additionalProperties: true
+
     DeletePesagemRequest:
       type: object
       required:
-      - peso
+        - peso
       properties:
         peso:
           type: string
-          description: 'Pesagem (Bubble type: animal_peso) - ID'
+          description: "Pesagem (Bubble type: animal_peso) - ID"
         momento_pesa:
           type: string
           nullable: true
-          description: 'Momento (Option Set: momento_pes...) (opcional)'
+          description: "Momento (Option Set: momento_pes...) (opcional)"
       additionalProperties: false
+
     DeletePesagemResponse:
       type: object
       additionalProperties: true
+
     NovoAnimalPesoRequest:
       type: object
       required:
-      - Animal
-      - Data de Pesagem
-      - Peso Kg
-      - Tipo_equipamento
+        - Animal
+        - Data de Pesagem
+        - Peso Kg
+        - Tipo_equipamento
       properties:
         Animal:
           type: string
@@ -1224,17 +1286,19 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+
     NovoAnimalPesoResponse:
       type: object
       additionalProperties: true
+
     EditarAnimalPesoRequest:
       type: object
       required:
-      - Animal_Peso
-      - Data de Pesagem
-      - Peso Kg
-      - Tipo_equipamento
-      - momento_pesagem
+        - Animal_Peso
+        - Data de Pesagem
+        - Peso Kg
+        - Tipo_equipamento
+        - momento_pesagem
       properties:
         Animal_Peso:
           type: string
@@ -1252,31 +1316,36 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+
     EditarAnimalPesoResponse:
       type: object
       additionalProperties: true
+
     BuscarVacinasResponse:
       type: object
       additionalProperties: true
+
     DeleteVacinaRequest:
       type: object
       required:
-      - vacinacao
+        - vacinacao
       properties:
         vacinacao:
           type: string
-          description: 'VacinaÃ§Ã£o (Bubble type: vacinacao) - ID'
+          description: "vacinas (Bubble type: vacinacao) - ID"
       additionalProperties: false
+
     DeleteVacinaResponse:
       type: object
       additionalProperties: true
+
     AplicarVacinaRequest:
       type: object
       required:
-      - animal
-      - vacina
-      - data
-      - observacao
+        - animal
+        - vacina
+        - data
+        - observacao
       properties:
         animal:
           type: string
@@ -1317,17 +1386,17 @@ components:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica da assinatura do veterinÃ¡rio (upload em /fileupload).
+          description: URL pública da assinatura do veterinário (upload em /fileupload).
         foto_aplicacao:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica da foto da aplicacao (upload em /fileupload).
+          description: URL pública da foto da aplicação (upload em /fileupload).
         foto_nota_fiscal:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica da nota fiscal (upload em /fileupload).
+          description: URL pública da nota fiscal (upload em /fileupload).
         latitude:
           type: string
           nullable: true
@@ -1335,11 +1404,12 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+
     AplicarVacinaResponse:
       type: object
       required:
-      - status
-      - response
+        - status
+        - response
       properties:
         status:
           type: string
@@ -1348,14 +1418,15 @@ components:
           type: object
           additionalProperties: true
       additionalProperties: false
+
     EditarVacinaRequest:
       type: object
       required:
-      - vacinacao
+        - vacinacao
       properties:
         vacinacao:
           type: string
-          description: 'VacinaÃ§Ã£o (Bubble type: vacinacao) - ID'
+          description: "vacinas (Bubble type: vacinacao) - ID"
         data:
           type: string
           format: date
@@ -1374,7 +1445,7 @@ components:
         responsavel:
           type: string
           nullable: true
-          description: 'ResponsÃ¡vel (Bubble type: User) - ID'
+          description: "Responsável (Bubble type: User) - ID"
         veterinario:
           type: string
           nullable: true
@@ -1390,17 +1461,18 @@ components:
         animal:
           type: string
           nullable: true
-          description: 'Animal (Bubble type: animal) - ID'
+          description: "Animal (Bubble type: animal) - ID"
         vacina:
           type: string
           nullable: true
-          description: 'Option Set: Tipo_vacina (valor do Option Set)'
+          description: "Option Set: Tipo_vacina (valor do Option Set)"
       additionalProperties: false
+
     EditarVacinaResponse:
       type: object
       required:
-      - status
-      - response
+        - status
+        - response
       properties:
         status:
           type: string
@@ -1409,19 +1481,21 @@ components:
           type: object
           additionalProperties: true
       additionalProperties: false
+
     DesaplicarVacinacaoRequest:
       type: object
       required:
-      - vacinacao
+        - vacinacao
       properties:
         vacinacao:
           type: string
       additionalProperties: false
+
     DesaplicarVacinacaoResponse:
       type: object
       required:
-      - status
-      - response
+        - status
+        - response
       properties:
         status:
           type: string
@@ -1430,45 +1504,57 @@ components:
           type: object
           additionalProperties: true
       additionalProperties: false
+
     BuscarMedicamentosResponse:
       type: object
       additionalProperties: true
+
     CancelarMedicamentoRequest:
       type: object
       required:
-      - medicamento
+        - medicamento
       properties:
         medicamento:
           type: string
       additionalProperties: false
+
     CancelarMedicamentoResponse:
       type: object
       additionalProperties: true
+
     CriarMedicamentoRequest:
       type: object
       required:
-      - animal
-      - data_aplicacao
-      - status
-      - remedio
-      - metodo
-      - prescricao
-      - tipo_resp
-      - usuario
+        - animal
+        - data_aplicacao
+        - status
+        - remedio
+        - metodo
+        - prescricao
+        - usuario
       properties:
         animal:
           type: string
+          description: "Animal (Bubble type: animal) - ID"
         data_aplicacao:
           type: string
           format: date
         status:
           type: string
+          description: "Option Set (ex.: OS:repro_Medica...)"
         remedio:
           type: string
+          description: "Option Set (ex.: OS:repro_Medica...)"
+        responsavel_use:
+          type: string
+          nullable: true
+          description: Texto livre (conforme parâmetro do Bubble)
         metodo:
           type: string
+          description: "Option Set (ex.: OS:repro_Medica...)"
         prescricao:
           type: string
+          description: "Option Set (ex.: OS:repro_Medica...)"
         obs:
           type: string
           nullable: true
@@ -1476,35 +1562,32 @@ components:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica do arquivo (faÃ§a upload em /fileupload e use a
-            URL retornada).
-        tipo_resp:
-          type: string
-        responsavel_use:
-          type: string
-          nullable: true
+          description: URL pública do arquivo (faça upload em /fileupload e use a URL retornada).
         responsavel_vet:
           type: string
           nullable: true
+          description: Texto livre (conforme parâmetro do Bubble)
         usuario:
           type: string
+          description: "User (Bubble type: User) - ID"
         lote:
           type: string
           nullable: true
+          description: "Lote (Bubble type: lote) - ID (opcional)"
       additionalProperties: false
+
     CriarMedicamentoResponse:
       type: object
       additionalProperties: true
+
     AtualizarMedicamentoRequest:
       type: object
       required:
-      - medicamento
+        - medicamento
       properties:
         medicamento:
           type: string
-        animal:
-          type: string
-          nullable: true
+          description: "Medicamento (Bubble type: medicamento) - ID"
         data_aplicacao:
           type: string
           format: date
@@ -1516,72 +1599,78 @@ components:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica do arquivo (faÃ§a upload em /fileupload e use a
-            URL retornada).
+          description: URL pública do arquivo (faça upload em /fileupload e use a URL retornada).
+        animal:
+          type: string
+          nullable: true
+          description: "Animal (Bubble type: animal) - ID (opcional)"
         fazenda:
           type: string
           nullable: true
+          description: "Fazenda (Bubble type: fazenda) - ID (opcional)"
         remedio:
           type: string
           nullable: true
+          description: "Option Set (ex.: OS:repro_Medica...)"
         metodo:
           type: string
           nullable: true
+          description: "Option Set (ex.: OS:repro_Medica...)"
         prescricao:
           type: string
           nullable: true
+          description: "Option Set (ex.: OS:repro_Medica...)"
         responsavel:
           type: string
           nullable: true
         status:
           type: string
           nullable: true
+          description: "Option Set (ex.: OS:repro_Medica...)"
         tipo:
           type: string
           nullable: true
-        tipo_responsavel:
-          type: string
-          nullable: true
+          description: "Option Set (ex.: OS:repro_Medica...)"
       additionalProperties: false
+
     AtualizarMedicamentoResponse:
       type: object
       additionalProperties: true
+
     AplicarMedicamentoRequest:
       type: object
       required:
-      - medicamento
-      - data_aplicacao
-      - obs
-      - tipo_resp
-      - usuario
+        - data_aplicacao
+        - obs
+        - medicamento
+        - usuario
       properties:
-        medicamento:
-          type: string
         data_aplicacao:
           type: string
           format: date
         responsavel_use:
           type: string
           nullable: true
+          description: Texto livre (conforme parâmetro do Bubble)
         obs:
           type: string
         receita:
           type: string
           format: uri
           nullable: true
-          description: URL pÃºblica do arquivo (faÃ§a upload em /fileupload e use a
-            URL retornada).
-        tipo_resp:
+          description: URL pública do arquivo (faça upload em /fileupload e use a URL retornada).
+        medicamento:
           type: string
-        responsavel_vet:
-          type: string
-          nullable: true
+          description: "Medicamento (Bubble type: medicamento) - ID"
         usuario:
           type: string
+          description: "User (Bubble type: User) - ID"
         lote:
           type: string
           nullable: true
+          description: "Lote (Bubble type: lote) - ID (opcional)"
       additionalProperties: false
+
     AplicarMedicamentoResponse:
       type: object
       additionalProperties: true
