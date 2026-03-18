@@ -931,6 +931,10 @@ components:
         user:
           type: string
           nullable: true
+        colaborador:
+          type: string
+          nullable: true
+          description: "Colaborador (Bubble type: colaboradores) - ID"
       additionalProperties: false
 
     NovoAnimalPesoResponse:
@@ -961,6 +965,10 @@ components:
         momento_pesagem:
           type: string
           nullable: true
+        colaborador:
+          type: string
+          nullable: true
+          description: "Colaborador (Bubble type: colaboradores) - ID"
       additionalProperties: false
 
     EditarAnimalPesoResponse:
