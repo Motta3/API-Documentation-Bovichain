@@ -238,6 +238,26 @@ paths:
               schema:
                 $ref: "#/components/schemas/BuscarColaboradoresResponse"
 
+  /criar_colaboradores:
+    post:
+      tags:
+        - Colaboradores
+      summary: Criar colaborador
+      description: Cria um colaborador. Requer autenticação Bearer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CriarColaboradoresRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CriarColaboradoresResponse"
+
   /get-fazendas:
     get:
       tags:
@@ -251,46 +271,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetFazendasResponse"
-
-  /registrar_morte_animal:
-    post:
-      tags:
-        - Morte
-      summary: Registrar morte do animal
-      description: Registra a morte de um animal.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RegistrarMorteRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RegistrarMorteResponse"
-
-  /reverter_morte_animal:
-    post:
-      tags:
-        - Morte
-      summary: Reverter registro de morte
-      description: Reverte (desfaz) um registro de morte do animal.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ReverterMorteRequest"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReverterMorteResponse"
 
   /get-finalidade:
     get:
@@ -562,6 +542,89 @@ components:
       type: object
       additionalProperties: true
 
+    CriarColaboradoresRequest:
+      type: object
+      required:
+        - ativo
+        - nome
+        - funcao
+        - responsavel
+        - principal
+      properties:
+        ativo:
+          type: boolean
+        nome:
+          type: string
+        telefone_formatado:
+          type: string
+          nullable: true
+        telefone_limpo:
+          type: string
+          nullable: true
+        funcao:
+          type: string
+          description: "Option Set: colaborador_funcao (valor do Option Set)"
+        fazendas:
+          type: array
+          nullable: true
+          items:
+            type: string
+          description: "Fazendas (Bubble type: fazenda) - IDs"
+        usuario_vinculado:
+          type: string
+          nullable: true
+          description: "User (Bubble type: User) - ID"
+        acesso_liberado:
+          type: boolean
+          nullable: true
+        responsavel:
+          type: string
+          description: "Responsável (Bubble type: User) - ID"
+        cpf-cnpj:
+          type: string
+          nullable: true
+        sie_frigorifico:
+          type: string
+          nullable: true
+        sit_frigorifico:
+          type: string
+          nullable: true
+        sim_frigorifico:
+          type: string
+          nullable: true
+        cep:
+          type: string
+          nullable: true
+        bairro:
+          type: string
+          nullable: true
+        cidade:
+          type: string
+          nullable: true
+        complemento:
+          type: string
+          nullable: true
+        estado:
+          type: string
+          nullable: true
+          description: "Option Set: Estados (valor do Option Set)"
+        numero:
+          type: string
+          nullable: true
+        rua:
+          type: string
+          nullable: true
+        inscricao_estadual:
+          type: string
+          nullable: true
+        principal:
+          type: boolean
+      additionalProperties: false
+
+    CriarColaboradoresResponse:
+      type: object
+      additionalProperties: true
+
     OptionSetResponse:
       type: object
       description: Resposta do Option Set (estrutura fixa do sistema).
@@ -601,6 +664,11 @@ components:
         - raca
         - sexo
         - tag-principal
+        - data_cadastro
+        - latitude
+        - longitude
+        - animal_proprietario
+        - finalidade
       properties:
         fazenda:
           type: string
@@ -623,11 +691,19 @@ components:
           type: string
           format: date
           nullable: true
-        foto:
+        foto-fucinho:
           type: string
           format: uri
           nullable: true
           description: URL pública da imagem (opcional)
+        animal_proprietario:
+          type: string
+          nullable: true
+          description: "Proprietário (Bubble type: colaboradores) - ID"
+        finalidade:
+          type: string
+          nullable: true
+          description: "Option Set: finalidade_animal (valor do Option Set)"
       additionalProperties: false
 
     BuscarAnimaisResponse:
@@ -701,130 +777,61 @@ components:
         animal:
           type: string
           description: "Animal (Bubble type: animal) - ID"
-        nome:
-          type: string
-          nullable: true
-        fazenda:
-          type: string
-          nullable: true
         raca:
           type: string
           nullable: true
           description: "Option Set: raca_animal (valor do Option Set)"
-        raca_hibrida:
-          type: array
-          nullable: true
-          items:
-            type: string
-        sex:
+        fazenda:
           type: string
           nullable: true
-          description: "(deprecated) use ''sexo''"
-        morto:
-          type: boolean
-          nullable: true
-        morte_detalhe:
+          description: "Fazenda (Bubble type: fazenda) - ID"
+        nome:
           type: string
           nullable: true
-        morte_tipo:
+        sexo:
           type: string
           nullable: true
-        penhorado:
-          type: boolean
-          nullable: true
-        penhorado_e_pago:
-          type: boolean
-          nullable: true
-        selos:
-          type: array
-          nullable: true
-          items:
-            type: string
-        foto_principal:
-          type: string
-          format: uri
-          nullable: true
-          description: URL pública da foto principal (upload em /fileupload).
+          description: "Option Set: animal_sex (valor do Option Set)"
         data_nascimento:
           type: string
           format: date
-          nullable: true
-        origem:
-          type: string
           nullable: true
         etiquetas:
           type: array
           nullable: true
           items:
             type: string
-          description: "Lista de etiquetas (Bubble type: etiqueta) - IDs"
-        local_nascimento:
+          description: "Etiquetas (Bubble type: etiqueta) - IDs"
+        mae:
           type: string
           nullable: true
-        nome_mae:
+          description: "Mãe (Bubble type: animal) - ID"
+        pai:
           type: string
           nullable: true
-        nome_pai:
-          type: string
-          nullable: true
-        observacoes_nascimento:
-          type: string
-          nullable: true
-        vinculo_pai:
-          type: string
-          nullable: true
-        vinculo_mae:
-          type: string
-          nullable: true
-        morte_foto:
-          type: string
-          format: uri
-          nullable: true
-          description: URL pública da foto de morte (upload em /fileupload).
-        rfid:
+          description: "Pai (Bubble type: animal) - ID"
+        brinco_padrao:
           type: string
           nullable: true
         finalidade:
           type: string
           nullable: true
           description: "Option Set: finalidade_animal (valor do Option Set)"
-        fazenda_local:
+        fazenda_pasto:
           type: string
           nullable: true
+          description: "Fazenda pasto (Bubble type: fazenda_pastos) - ID"
         lote:
           type: array
           nullable: true
           items:
             type: string
           description: "Lotes (Bubble type: lote) - IDs"
-        peso_ideal:
-          type: number
-          nullable: true
-        sobrepor_peso:
-          type: boolean
-          nullable: true
-        Obs:
+        observacao:
           type: string
-          nullable: true
-        data_desmane:
-          type: string
-          format: date
-          nullable: true
-        data_maturidade:
-          type: string
-          format: date
-          nullable: true
-        peso_desmame:
-          type: number
-          nullable: true
-        peso_maturidade:
-          type: number
           nullable: true
         peso_nascimento:
           type: number
-          nullable: true
-        pureza_raca:
-          type: string
           nullable: true
         categoria:
           type: string
@@ -838,24 +845,6 @@ components:
           type: string
           nullable: true
         longitude:
-          type: string
-          nullable: true
-        data_cadastro:
-          type: string
-          format: date
-          nullable: true
-        sexo:
-          type: string
-          nullable: true
-          description: "Option Set: animal_sex (valor do Option Set)"
-        brinco_padrao:
-          type: string
-          nullable: true
-        fazenda_pasto:
-          type: string
-          nullable: true
-          description: "Fazenda pasto (Bubble type: fazenda_pastos) - ID"
-        observacao:
           type: string
           nullable: true
         tipo_animal:
@@ -877,143 +866,23 @@ components:
         sisbov:
           type: string
           nullable: true
-        status_saida:
+        genealogia:
           type: string
           nullable: true
-          description: "Option Set: Animal_status_saida (valor do Option Set)"
+          description: "Genealogia (Bubble type: animal_genealogia) - ID"
+        valor_aquisicao:
+          type: number
+          nullable: true
+        devolvido:
+          type: boolean
+          nullable: true
+        status_animal:
+          type: string
+          nullable: true
+          description: "Option Set: Animal_status (valor do Option Set)"
       additionalProperties: false
 
     EditarAnimalResponse:
-      type: object
-      additionalProperties: true
-
-    RegistrarMorteRequest:
-      type: object
-      required:
-        - data
-        - observacao
-        - organizacao
-        - causa_morte
-        - animal
-        - campo_alterado
-        - criado_por
-        - data_criacao
-        - descricao
-        - fazenda
-        - origem_alteracao
-        - unique_id_alteracao
-        - valor_antes
-        - valor_depois
-        - colaborador
-      properties:
-        data:
-          type: string
-          format: date
-        observacao:
-          type: string
-        organizacao:
-          type: string
-        causa_morte:
-          type: string
-        animal:
-          type: string
-        campo_alterado:
-          type: string
-        criado_por:
-          type: string
-          description: "User (Bubble type: User) - ID"
-        data_criacao:
-          type: string
-          format: date
-        descricao:
-          type: string
-        fazenda:
-          type: string
-        origem_alteracao:
-          type: string
-          description: "Option Set: Origem_alteracao (valor do Option Set)"
-        unique_id_alteracao:
-          type: string
-        valor_antes:
-          type: string
-        valor_depois:
-          type: string
-        colaborador:
-          type: string
-          description: "Colaboradores (Bubble type: colaboradores) - ID"
-        imagem:
-          type: string
-          format: uri
-          nullable: true
-          description: URL pública do arquivo/imagem (upload em /fileupload).
-      additionalProperties: false
-
-    RegistrarMorteResponse:
-      type: object
-      additionalProperties: true
-
-    ReverterMorteRequest:
-      type: object
-      required:
-        - data
-        - observacao
-        - organizacao
-        - causa_morte
-        - animal
-        - campo_alterado
-        - criado_por
-        - data_criacao
-        - descricao
-        - fazenda
-        - origem_alteracao
-        - unique_id_alteracao
-        - valor_antes
-        - valor_depois
-        - colaborador
-      properties:
-        data:
-          type: string
-          format: date
-        observacao:
-          type: string
-        organizacao:
-          type: string
-        causa_morte:
-          type: string
-        animal:
-          type: string
-        campo_alterado:
-          type: string
-        criado_por:
-          type: string
-          description: "User (Bubble type: User) - ID"
-        data_criacao:
-          type: string
-          format: date
-        descricao:
-          type: string
-        fazenda:
-          type: string
-        origem_alteracao:
-          type: string
-          description: "Option Set: Origem_alteracao (valor do Option Set)"
-        unique_id_alteracao:
-          type: string
-        valor_antes:
-          type: string
-        valor_depois:
-          type: string
-        colaborador:
-          type: string
-          description: "Colaboradores (Bubble type: colaboradores) - ID"
-        imagem:
-          type: string
-          format: uri
-          nullable: true
-          description: URL pública do arquivo/imagem (upload em /fileupload).
-      additionalProperties: false
-
-    ReverterMorteResponse:
       type: object
       additionalProperties: true
 
